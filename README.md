@@ -1,1 +1,0 @@
-# ymirscript.github.io
