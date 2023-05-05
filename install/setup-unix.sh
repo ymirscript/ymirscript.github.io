@@ -1,7 +1,6 @@
 #!/bin/bash
 
-ymir_folder="$HOME/.local/ymir"
-mkdir -p "$ymir_folder"
+ymir_folder="/usr/local/bin"
 
 case "$(uname -s)" in
     Linux*)
@@ -20,20 +19,9 @@ ymir_exe_path="$ymir_folder/ymir"
 curl -L "$ymir_exe_url" -o "$ymir_exe_path"
 chmod +x "$ymir_exe_path"
 
-path_file=""
-case "$SHELL" in
-    *"/bash")
-        path_file="$HOME/.bashrc"
-        ;;
-    *"/zsh")
-        path_file="$HOME/.zshrc"
-        ;;
-    *)
-        echo "Unknown shell, please add the path manually to the PATH variable: $ymir_folder"
-        exit 1
-        ;;
-esac
-
-if ! grep -q "$ymir_folder" "$path_file"; then
-    echo "export PATH=\$PATH:$ymir_folder" >> "$path_file"
+if [[ ":$PATH:" != *":$ymir_folder:"* ]]; then
+    echo "export PATH=$ymir_folder:\$PATH" >> ~/.bashrc
+    source ~/.bashrc
 fi
+
+echo "Ymir installed successfully!"
